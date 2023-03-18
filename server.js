@@ -22,11 +22,17 @@ const db = mysql.createConnection(
     console.log(`Connected to the company_db database.`)
 )
 
-app.get('/', (req, res) => {
-    const sql = `SELECT id, first_name AS title FROM role`;
-    
+app.get('/api/employee', (req, res) => {
+    const sql = `SELECT id, first_name AS name FROM employee`;
     db.query(sql, (err, rows) => {
-    console.log(sql);
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: 'success',
+        data: rows
+      });
     });
   });
 
