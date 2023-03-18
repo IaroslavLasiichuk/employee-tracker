@@ -68,6 +68,15 @@ const init = async () => {
             break;
     };
 } 
+// View all of the employees.
+const viewEmployees = async () => {
+    let sql= `SELECT * FROM employee`;
+  db.query(sql, function (err, rows) {
+      if (err) throw err;
+        console.table(rows);
+        init();
+    });
+}
 init();
 
 app.listen(PORT, () => {
