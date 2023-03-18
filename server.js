@@ -5,6 +5,8 @@ const mysql = require('mysql2');
 const app = express();
 const cTable = require('console.table');
 const dotenv = require('dotenv');
+const data = require('./data');
+const inquirer = require('inquirer');
 dotenv.config();
 //  Port number for Heroku
 const PORT = process.env.PORT || 8000;
@@ -24,20 +26,49 @@ const db = mysql.createConnection(
     console.log(`Connected to the company_db database.`)
 )
 
-app.get('/api/employee', (req, res) => {
-    const sql = `SELECT id, last_name AS name FROM employee`;
-    db.query(sql, (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json({
-        message: 'success',
-          data: rows
-      });
-      console.table(rows);
-    });
-  });
+// Initialize app
+const init = async () => {
+    let answers = await inquirer.prompt(data);
+
+    switch (answers.choice) {
+        case 'View all employees':
+            viewEmployees();
+            break;
+
+        case 'View all departments':
+            viewDepartments();
+            break;
+
+        case 'View all roles':
+            viewRoles();
+            break;
+
+        case 'View all employees':
+            addEmployee();
+            break
+
+        case 'Add a department':
+            addDepartment();
+            break
+
+        case 'Add a roll':
+            addRole();
+            break
+        
+        case 'Add a employee':
+            addEmployee();
+            break
+
+        case 'Update Employee Role':
+            updateEmployee();
+            break
+
+        case 'Exit':
+            db.end();
+            break;
+    };
+} 
+init();
 
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT} at http://localhost${PORT}`);
