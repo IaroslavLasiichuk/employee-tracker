@@ -31,9 +31,6 @@ const init = async () => {
     let answers = await inquirer.prompt(data);
 
     switch (answers.choice) {
-        case 'View all employees':
-            viewEmployees();
-            break;
 
         case 'View all departments':
             viewDepartments();
@@ -44,8 +41,8 @@ const init = async () => {
             break;
 
         case 'View all employees':
-            addEmployee();
-            break
+            viewEmployees();
+            break;
 
         case 'Add a department':
             addDepartment();
@@ -54,7 +51,7 @@ const init = async () => {
         case 'Add a roll':
             addRole();
             break
-        
+
         case 'Add a employee':
             addEmployee();
             break
@@ -67,18 +64,93 @@ const init = async () => {
             db.end();
             break;
     };
-} 
-// View all of the employees.
-const viewEmployees = async () => {
-    let sql= `SELECT * FROM employee`;
-  db.query(sql, function (err, rows) {
-      if (err) throw err;
+}
+// View all of the departments.
+const viewDepartments = async () => {
+    let sql = `SELECT * FROM department`;
+    db.query(sql, function (err, rows) {
+        if (err) throw err;
         console.table(rows);
         init();
     });
 }
+// View all roles
+const viewRoles = async () => {
+    let sql = `SELECT roles.id, roles.title, roles.salary, department.department_name
+    FROM roles
+    JOIN department ON roles.department_id = department.id`;
+    db.query(sql, function (err, rows) {
+        if (err) throw err;
+        console.table(rows);
+        init();
+    });
+}
+
+// View all employees
+const viewEmployees = () => {
+    let sql = `SELECT e.id AS employee_id, e.first_name, e.last_name, r.title AS job_title, d.department_name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+    FROM employee e
+    JOIN roles r ON e.role_id = r.id
+    JOIN department d ON r.department_id = d.id
+    LEFT JOIN employee m ON e.manager_id = m.id`;
+    db.query(sql, function (err, rows) {
+        if (err) throw err;
+        console.table(rows);
+        init();
+    });
+}
+
+const addDepartment = () => {
+    inquirer
+        .prompt({
+            name: 'name',
+            type: 'input',
+            message: 'What is the name of the department you would like to add?'
+        })
+        .then(answer => {
+            let sql = `INSERT INTO department (department_name) VALUES ('${answer.name}')`;
+            db.query(sql, function (err, rows) {
+                if (err) throw err;
+                init();
+            });
+
+        })
+}
+    
+const addRole = ()=> {
+    inquirer
+      .prompt([
+        {
+          name: 'title',
+          type: 'input',
+          message: 'What is the title of the role you would like to add?'
+        },
+        {
+          name: 'salary',
+          type: 'number',
+          message: 'What is the salary of the role you would like to add?'
+        },
+        {
+          name: 'department_id',
+          type: 'number',
+          message: 'What is the department id for the role you would like to add?'
+        }
+      ])
+      .then(answer => {
+        let sql = `INSERT INTO roles(title, salary, department_id) 
+           VALUES ('${answer.title}', '${answer.salary}', '${answer.department_id}')`;
+
+        db.query(sql, function (err, rows) {
+            if (err) throw err;
+            init();
+        });
+
+    })
+  }
+  
+
 init();
 
-app.listen(PORT, () => {
-    console.log(`Listening on ${PORT} at http://localhost${PORT}`);
-})
+    app.listen(PORT, () => {
+        console.log(`Listening on ${PORT} at http://localhost${PORT}`);
+    })
