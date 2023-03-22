@@ -7,6 +7,7 @@ const cTable = require('console.table');
 const dotenv = require('dotenv');
 const data = require('./data');
 const inquirer = require('inquirer');
+const { NULL } = require('node-sass');
 dotenv.config();
 //  Port number for Heroku
 const PORT = process.env.PORT || 8000;
@@ -149,7 +150,7 @@ const addRole = () => {
                         name: 'Finance',
                         value: 4,
                     },
-                 ]
+                ]
             }
         ])
         .then(answer => {
@@ -191,29 +192,29 @@ const addEmployee = () => {
                     },
 
                     {
-                        name: 'Software Engineer',
+                        name: 'Selesperson',
                         value: 3,
                     },
                     {
-                        name: 'Accountant',
+                        name: 'Software Engineer',
                         value: 4,
                     },
                     {
-                        name: 'Lawyer',
+                        name: 'Account Manager',
                         value: 5,
                     },
                     {
-                        name: 'Legal Team Lead',
+                        name: 'Accountant',
                         value: 6,
                     },
                     {
-                        name: 'Selesperson',
+                        name: 'Legal Team Lead',
                         value: 7,
                     },
                     {
-                        name: 'Account Manager',
+                        name: 'Lawyer',
                         value: 8,
-                    },
+                    }
                 ]
             },
             {
@@ -223,36 +224,40 @@ const addEmployee = () => {
                 choices: [
                     {
                         name: 'John Doe',
-                        value: 1, 
+                        value: 1,
                     },
                     {
                         name: 'Mike Chan',
-                        value: 2, 
+                        value: 2,
                     },
                     {
                         name: 'Iaroslav Lasiichuk',
-                        value: 3, 
+                        value: 3,
                     },
                     {
                         name: 'Ashley Rodriguez',
-                        value: 4, 
+                        value: 4,
                     },
                     {
                         name: 'Kevin Tupic',
-                        value: 5, 
+                        value: 5,
                     },
                     {
                         name: 'Kunal Singh',
-                        value: 6, 
+                        value: 6,
                     },
                     {
                         name: 'Makia Brown',
-                        value: 7, 
+                        value: 7,
                     },
                     {
                         name: 'Sarah Lourd',
-                        value: 8, 
-                    }
+                        value: 8,
+                    },
+                    {
+                        name: 'Tom Allen',
+                        value: 9,
+                    },
                 ]
             },
 
@@ -265,8 +270,106 @@ const addEmployee = () => {
                 if (err) throw err;
                 init();
             });
-        })
+        });
 }
+const updateEmployee = () => {
+    inquirer
+    .prompt([ 
+            {
+                name: 'employee',
+                type: 'list',
+                message: 'Which employees role do you wanna update?',
+                choices: [
+                    {
+                        name: 'John Doe',
+                        value: 1,
+                    },
+                    {
+                        name: 'Mike Chan',
+                        value: 2,
+                    },
+                    {
+                        name: 'Iaroslav Lasiichuk',
+                        value: 3,
+                    },
+                    {
+                        name: 'Ashley Rodriguez',
+                        value: 4,
+                    },
+                    {
+                        name: 'Kevin Tupic',
+                        value: 5,
+                    },
+                    {
+                        name: 'Kunal Singh',
+                        value: 6,
+                    },
+                    {
+                        name: 'Makia Brown',
+                        value: 7,
+                    },
+                    {
+                        name: 'Sarah Lourd',
+                        value: 8,
+                    }
+                ]
+            },
+            {
+                name: 'role',
+                type: 'list',
+                message: 'Which role do you wanna to assign the selected employee?',
+                choices: [
+                    {
+                        name: 'Sales Lead',
+                        value: 1,
+                    },
+                    {
+                        name: 'Lead Engineer',
+                        value: 2,
+                    },
+
+                    {
+                        name: 'Selesperson',
+                        value: 3,
+                    },
+                    {
+                        name: 'Software Engineer',
+                        value: 4,
+                    },
+                    {
+                        name: 'Account Manager',
+                        value: 5,
+                    },
+                    {
+                        name: 'Accountant',
+                        value: 6,
+                    },
+                    {
+                        name: 'Legal Team Lead',
+                        value: 7,
+                    },
+                    {
+                        name: 'Lawyer',
+                        value: 8,
+                    }
+                ]
+            },
+
+        ])
+        .then(answer => {
+            let sql = `UPDATE employee
+            SET role_id= '${answer.role}'
+            WHERE id = '${answer.employee}'`;
+            console.log(answer.role);
+            console.log(answer.employee);
+
+            db.query(sql, function (err, rows) {
+                if (err) throw err;
+                init();
+            });
+        });
+
+     }
 init();
 
 app.listen(PORT, () => {

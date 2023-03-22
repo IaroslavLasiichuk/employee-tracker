@@ -10,7 +10,7 @@ const questions = [
       'Add a department',
       'Add a roll',
       'Add a employee',
-      'Update a employee role',
+      'Update Employee Role',
       'Exit'
     ],
   }
