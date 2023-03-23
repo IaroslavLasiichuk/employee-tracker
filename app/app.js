@@ -35,6 +35,10 @@ const init = async () => {
         case 'Update Employee Role':
             updateEmployee();
             break
+        
+        case 'Update Employee Manager':
+            updateEmployeeManager();
+            break
 
         case 'Exit':
             db.end();
@@ -344,4 +348,98 @@ const updateEmployee = () => {
             });
         });
 }
+const updateEmployeeManager = () => {
+    inquirer
+    .prompt([ 
+        {
+            name: 'employee',
+            type: 'list',
+            message: 'Which employees manager do you wanna update?',
+            choices: [
+                {
+                    name: 'John Doe',
+                    value: 1,
+                },
+                {
+                    name: 'Mike Chan',
+                    value: 2,
+                },
+                {
+                    name: 'Iaroslav Lasiichuk',
+                    value: 3,
+                },
+                {
+                    name: 'Ashley Rodriguez',
+                    value: 4,
+                },
+                {
+                    name: 'Kevin Tupic',
+                    value: 5,
+                },
+                {
+                    name: 'Kunal Singh',
+                    value: 6,
+                },
+                {
+                    name: 'Makia Brown',
+                    value: 7,
+                },
+                {
+                    name: 'Sarah Lourd',
+                    value: 8,
+                }
+            ]
+        },
+        {
+            name: 'manager_id',
+            type: 'list',
+            message: 'Which manager do you wanna to assign the selected employee?',
+            choices: [
+                {
+                    name: 'John Doe',
+                    value: 1,
+                },
+                {
+                    name: 'Mike Chan',
+                    value: 2,
+                },
+                {
+                    name: 'Iaroslav Lasiichuk',
+                    value: 3,
+                },
+                {
+                    name: 'Ashley Rodriguez',
+                    value: 4,
+                },
+                {
+                    name: 'Kevin Tupic',
+                    value: 5,
+                },
+                {
+                    name: 'Kunal Singh',
+                    value: 6,
+                },
+                {
+                    name: 'Makia Brown',
+                    value: 7,
+                },
+                {
+                    name: 'Sarah Lourd',
+                    value: 8,
+                }
+            ]
+        },
+
+    ])
+    .then(answer => {
+        let sql = `UPDATE employee
+        SET manager_id= '${answer.manager_id}'
+        WHERE id = '${answer.employee}'`;
+        db.query(sql, function (err, rows) {
+            if (err) throw err;
+            init();
+        });
+    });
+}
+
 module.exports = { init };
