@@ -9,6 +9,7 @@ This command-line application allows a business owner to manage their company's 
 * Add a role
 * Add an employee
 * Update an employee role
+* Update an employee manager
 * Select the desired option and follow the prompts to complete the action.
 
 ## Requirements

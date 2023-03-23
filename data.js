@@ -11,6 +11,7 @@ const questions = [
       'Add a roll',
       'Add a employee',
       'Update Employee Role',
+      'Update Employee Manager',
       'Exit'
     ],
   }
