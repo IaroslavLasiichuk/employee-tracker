@@ -20,7 +20,7 @@ This command-line application allows a business owner to manage their company's 
 
 ## Walkthrough Video
 Link to walkthrough video that demonstrates the functionality of the README generator.
-> https://drive.google.com/file/d/1lkJcFLsHy8FMPT0o2armtAIe102-orXG/view
+> https://drive.google.com/file/d/16yizQZGE28tLn3vr4z7-tyBkJNJf-xi-/view
 
 ## Install the required dependencies using the following command:
 > To install the tool, follow these steps:
