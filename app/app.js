@@ -39,7 +39,7 @@ const init = async () => {
         case 'Update Employee Manager':
             updateEmployeeManager();
             break
-
+        
         case 'Exit':
             db.end();
             break;
@@ -246,7 +246,6 @@ const addEmployee = () => {
         .then(answer => {
             let sql = `INSERT INTO employee(first_name, last_name, role_id, manager_id) 
            VALUES ('${answer.first_name}', '${answer.last_name}', '${answer.role_id}', '${answer.manager_id}')`;
-
             db.query(sql, function (err, rows) {
                 if (err) throw err;
                 init();
@@ -441,5 +440,4 @@ const updateEmployeeManager = () => {
         });
     });
 }
-
 module.exports = { init };
